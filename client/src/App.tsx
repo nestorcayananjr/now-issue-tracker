@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function App() {
   const testRequest = () => {
-    axios.get('/api')
+    axios.get('/api/users')
       .then(res => console.log(res.data))
       .catch(err => console.error('ERROR:', err.response?.status, err.response?.data));
   };
