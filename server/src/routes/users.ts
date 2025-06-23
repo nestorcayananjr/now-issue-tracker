@@ -5,7 +5,7 @@ import express, { Router, Request, Response } from 'express'
 const router: Router = express.Router();
 
 // for testing purposes to see all the users, obvs wouldn't include in a production environment
-router.get('/', usersController.getAllUsers, authController.requireAuth, (_req: Request, res: Response) => {
+router.get('/', authController.requireAuth, usersController.getAllUsers, (_req: Request, res: Response) => {
     res.status(200).json(res.locals.fetchedUsers)
 })
 

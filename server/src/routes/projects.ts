@@ -5,7 +5,7 @@ import express, { Router, Request, Response } from 'express'
 const router: Router = express.Router();
 
 // get all projects of a user
-router.get('/', projectsController.getUserProjects, (_req: Request, res: Response) => {
+router.get('/', authController.requireAuth, projectsController.getUserProjects, (_req: Request, res: Response) => {
     res.status(200).json(res.locals.usersProjects)
 })
 

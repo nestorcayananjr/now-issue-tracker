@@ -21,6 +21,7 @@ const authController: authControllerInterface = {
 
             if (validPassword){
                 const session = (req.session as CustomSession);
+
                 // create the session and store the user id on it
                 session.userId = storedPassword.rows[0].id
                 return next();
@@ -33,12 +34,13 @@ const authController: authControllerInterface = {
     },
 
     requireAuth: async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
-        const session = (req.session as CustomSession);
 
+        const session = (req.session as CustomSession);
         if (!session.userId){
             return next(createHttpError(401, 'Unauthorized'))
+        } else {
+            return next();
         }
-        return next();
     }
 }
 

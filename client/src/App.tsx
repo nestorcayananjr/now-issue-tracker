@@ -1,29 +1,20 @@
-import React from 'react';
 import './App.css';
-import axios from 'axios';
+import { BrowserRouter, Routes, Route } from 'react-router';
+import LoginPage from './pages/LoginPage';
+import RegistrationPage from './pages/RegistrationPage';
+import ProjectsPage from './pages/ProjectsPage';
+import IssuesPage from './pages/IssuesPage';
 
 function App() {
-  const testRequest = () => {
-    axios.get('/api/users')
-      .then(res => console.log(res.data))
-      .catch(err => console.error('ERROR:', err.response?.status, err.response?.data));
-  };
-
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={() => testRequest()}>Click</button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/registration' element={<RegistrationPage />} />
+        <Route path='/dashboard' element={<ProjectsPage />} />
+        <Route path='/issues/:id' element={<IssuesPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

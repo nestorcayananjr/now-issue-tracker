@@ -10,12 +10,12 @@ interface projectsControllerInterface {
 
 const projectsController: projectsControllerInterface = {
     getUserProjects: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        console.log(req.session)
         const userId = (req.session as CustomSession).userId;
+        console.log(userId)
         
         try {
-            // here for testing purposes because can't figure out how to persist sessions/cookies on postman
-            // const usersProjects = await db.query(`SELECT * FROM projects WHERE created_by = 1`);
-            const usersProjects = await db.query(`SELECT * FROM projects WHERE user_id = ${userId}`);
+            const usersProjects = await db.query(`SELECT * FROM projects WHERE created_by= ${userId}`);
             res.locals.usersProjects = usersProjects.rows;
             return next()
         } catch (err) {
