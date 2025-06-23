@@ -34,7 +34,6 @@ const authController: authControllerInterface = {
     },
 
     requireAuth: async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
-
         const session = (req.session as CustomSession);
         if (!session.userId){
             return next(createHttpError(401, 'Unauthorized'))
