@@ -1,11 +1,11 @@
 import axios from "axios"
-import React, {useState, useMemo, useEffect} from "react"
+import {useState, useEffect} from "react"
 import CreateProjectForm from "../features/projects/components/CreateProjectForm"
 import ProjectComponent from "../features/projects/components/ProjectComponent"
 import { Project } from "../features/projects/types/Project"
 
 const ProjectsPage = () => {
-    const [projects, setProjects] = useState([])
+    const [projects, setProjects] = useState<Project[]>([])
 
     useEffect(() => {
         const controller = new AbortController();
@@ -28,17 +28,16 @@ const ProjectsPage = () => {
         };
         }, [])
 
-
     const projectComponents = projects.map((project: Project) => {
         return (
-            <ProjectComponent project_name={project.project_name} id={project.id} created_by={project.created_by} />
+            <ProjectComponent key={project.id} project_name={project.project_name} id={project.id} created_by={project.created_by} />
         )
     })
 
     return (
         <div>
             <h1>Projects Page</h1>
-            <CreateProjectForm />
+            <CreateProjectForm setProjects={setProjects}/>
             {projectComponents}
         </div>
     )

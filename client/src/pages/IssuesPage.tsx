@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router"
+import { useParams, useLocation, useNavigate } from "react-router"
 import CreateIssuesForm from "../features/issues/components/CreateIssueForm";
 import axios from "axios";
 import { ExistingIssues } from "../features/issues/types/IssuesType";
 
 const IssuesPage = () => {
     const { id } = useParams<{id: string}>();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [issues, setIssues] = useState<ExistingIssues[]>([]);
 
@@ -28,7 +30,7 @@ const IssuesPage = () => {
         return () => {
             controller.abort(); // cleanup on unmount
         };
-        }, [])
+        }, [id])
 
     const closeIssue = (id: number) => {
         try {
@@ -44,7 +46,6 @@ const IssuesPage = () => {
     }
 
     const issueComponents = issues.map((issue: ExistingIssues) => {
-        console.log(issue)
         return (
             <div>
                 <span>Title: {issue.title} </span>
@@ -58,9 +59,10 @@ const IssuesPage = () => {
 
     return (
         <div>
-            <h1>Issues Page for {id}</h1>
-            <CreateIssuesForm projectId={id!} />
+            <h1>Issues Page for {location.state.projectName}</h1>
+            <CreateIssuesForm projectId={id!} setIssues={setIssues}/>
             {issueComponents}
+            <button onClick={() => navigate('/dashboard')}>Go back to projects page</button>
         </div>
     )
 }

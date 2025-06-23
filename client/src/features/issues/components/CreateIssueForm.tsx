@@ -1,9 +1,13 @@
 import axios from "axios"
 import React, { useState } from "react"
-import { NewIssue } from "../types/IssuesType"
+import { NewIssue, ExistingIssues } from "../types/IssuesType"
 
+type CreateIssuesFormProps = {
+    projectId: string;
+    setIssues: React.Dispatch<React.SetStateAction<ExistingIssues[]>>
+}
 
-const CreateIssuesForm:React.FC<{projectId: string}> = ({projectId}) => {
+const CreateIssuesForm:React.FC<CreateIssuesFormProps> = ({projectId, setIssues}) => {
     const [issue, setIssue] = useState<NewIssue>({
         title: '',
         issue_description: '',
@@ -20,11 +24,13 @@ const CreateIssuesForm:React.FC<{projectId: string}> = ({projectId}) => {
 
     const handleClick = async () => {
         try {
-            console.log(issue)
             const newIssueId = await axios.post("http://localhost:5001/api/issues", issue, {
                 withCredentials: true
             })
             console.log(newIssueId.data);
+            setIssues((prevState) => {
+                return [...prevState, newIssueId.data]
+            })
         } catch (error) {
             throw new Error("Error creating new issue" + error)
         }

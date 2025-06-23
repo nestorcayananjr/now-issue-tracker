@@ -26,11 +26,19 @@ To get a local copy up and running follow steps.
 
 5. Start the client 
    ```sh
-   cd client
+   cd ../client
    npm install
    npm start
    ```
 <br>
+
+User Credentials for Testing
+
+| email   | password 
+| -------- | ------------ |
+| test@test.com       | password123       |
+| win@win.com     | securepass |
+| thomas@magee.com   | nowopwells |
 
 <!-- Engineering Decisions -->
 ## Engineering Decisions

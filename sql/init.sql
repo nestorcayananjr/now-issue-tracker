@@ -23,9 +23,9 @@ CREATE TABLE issues (
 );
 
 INSERT INTO users (name, email, password) VALUES
-('Alice Johnson', 'alice@example.com', 'password123'),
-('Bob Smith', 'bob@example.com', 'securepass'),
-('Charlie Lee', 'charlie@example.com', 'hunter2');
+('Test User', 'test@test.com', '$2b$10$KCIeuzwDHBMVKiPOailfGONpBXv8Vze6fOgUDMxLWMd1n4zhlz6xe'),
+('Winston', 'win@win.com', '$2b$10$OE2/n4rym2vj/PAsmGg/wOjqmndWKBSNE3wa6jQylzBvPgaKMJx3u'),
+('Thomas Magee', 'thomas@magee.com', '$2b$10$E/Jjk1hf4q8VQyt/h7wdCO3CFNszs/CE7YlZGRNVMEzHuG0irFKGi');
 
 INSERT INTO projects (project_name, created_by) VALUES
 ('Bug Tracker', 1),

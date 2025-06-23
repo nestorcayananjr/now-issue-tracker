@@ -1,7 +1,12 @@
 import React, { useState } from "react"
 import axios from "axios"
+import { Project } from "../types/Project"
 
-const CreateProjectForm = () => {
+type CreateProjectProps = {
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>
+}
+
+const CreateProjectForm: React.FC<CreateProjectProps> = ({setProjects}) => {
     const [projectName, setProjectName] = useState('')
 
     const config = {
@@ -18,11 +23,17 @@ const CreateProjectForm = () => {
     const handleProjectSubmit = async () => {
         try {
             const newProject = await axios.post('http://localhost:5001/api/projects', {project_name: projectName}, config)
-            console.log(newProject.data)
+            const newProjectData: Project = newProject.data
+
+            setProjects((prevState) => {
+                const newState: Project[] =  [...prevState, newProjectData]
+                return newState;
+            })
         } catch (error) {
             throw new Error("Error creating new project " + error)
         }
     }
+    
     return (
         <div>
             <h2>Create a New Project</h2>

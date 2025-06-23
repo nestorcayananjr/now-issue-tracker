@@ -4,10 +4,18 @@ import { useNavigate } from "react-router"
 const ProjectComponent: React.FC<Project> = ({project_name, id, created_by}) => {
     const navigate = useNavigate();
 
+    const handleClick = () => {
+        navigate(`/issues/${id}`, {
+            state: {
+                projectName: project_name
+            }
+        })
+    }
+
     return (
         <div>
             <span>Project Name: {project_name}</span>
-            <button onClick={() => navigate(`/issues/${id}`)}>See Details</button>
+            <button onClick={() => handleClick()}>See Details</button>
         </div>
     )
 }
