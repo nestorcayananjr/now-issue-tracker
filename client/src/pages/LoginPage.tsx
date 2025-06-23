@@ -36,14 +36,27 @@ const LoginPage = () => {
 
 
     return (
-        <div>
-            <label htmlFor="email">Email Address </label>
-            <input onChange={(e) => handleChange(e)} name="email" id="email" type={"text"} />
-            <label htmlFor="password">Password </label>
-            <input onChange={(e) => handleChange(e)} name="password" id="password" type={"password"} />
-            <button disabled={!login.email.length || !login.password.length}onClick={() => handleSubmit()}>Login</button>
-            <button onClick={() => navigate('/registration')}>No Account? Register Here</button>
-            {error && <p style={{color: "red"}}> Incorrect username or password!</p>}
+        <div className="registration-container">
+            <div className="registration-form">
+                <h1>Login</h1>
+
+                <div className="registration-field">
+                    <label htmlFor="email">Email</label>
+                    <input onChange={(e) => handleChange(e)} name="email" id="email" type={"text"} />
+                </div>
+
+                <div className="registration-field">
+                    <label htmlFor="password">Password</label>
+                    <input onChange={(e) => handleChange(e)} name="password" id="password" type={"password"} />
+                </div>
+
+                <div className="registration-button-container">
+                    <button disabled={!login.email.length || !login.password.length}onClick={() => handleSubmit()}>Login</button>
+                    <button onClick={() => navigate('/registration')}>No Account? Register Here</button>
+                </div>
+                {error && <p style={{color: "red"}}> Incorrect username or password!</p>}
+
+            </div>
         </div>
     )
 }

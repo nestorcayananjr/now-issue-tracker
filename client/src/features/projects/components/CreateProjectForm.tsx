@@ -35,11 +35,15 @@ const CreateProjectForm: React.FC<CreateProjectProps> = ({setProjects}) => {
     }
     
     return (
-        <div>
+        <div className="project-form">
             <h2>Create a New Project</h2>
-            <label htmlFor="name">Name</label>
-            <input onChange={(e) => handleProjectChange(e)} name="name" id="name" type={"text"} />
-            <button onClick={() => handleProjectSubmit()}>Submit</button>
+            <div className="registration-field">
+                <label htmlFor="name">Project Name: </label>
+                <input onChange={(e) => handleProjectChange(e)} name="name" id="name" type={"text"} />
+            </div>
+            <div className="registration-button-container">
+                <button onClick={() => handleProjectSubmit()}>Submit</button>
+            </div>
         </div>
     )
 }

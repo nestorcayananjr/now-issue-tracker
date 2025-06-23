@@ -35,10 +35,12 @@ const ProjectsPage = () => {
     })
 
     return (
-        <div>
-            <h1>Projects Page</h1>
+        <div className="project-page-container">
+            <div className="project-container">
+                <h1>Current Projects</h1>
+                {projectComponents}
+            </div>
             <CreateProjectForm setProjects={setProjects}/>
-            {projectComponents}
         </div>
     )
 }

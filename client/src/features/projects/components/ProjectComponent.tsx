@@ -13,8 +13,8 @@ const ProjectComponent: React.FC<Project> = ({project_name, id, created_by}) => 
     }
 
     return (
-        <div>
-            <span>Project Name: {project_name}</span>
+        <div className="project-box">
+            <span>{project_name}</span>
             <button onClick={() => handleClick()}>See Details</button>
         </div>
     )

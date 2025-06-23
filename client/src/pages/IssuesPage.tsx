@@ -40,6 +40,14 @@ const IssuesPage = () => {
                 ...updatedIssue,
                 status: updatedIssue.status === "open" ? "closed" : "open"
             }, { withCredentials: true})
+
+            setIssues((prevState) => {
+                return prevState.map((issue) =>
+                issue.id === id
+                  ? { ...issue, status: issue.status === 'open' ? 'closed' : 'open' }
+                  : issue
+            )})
+
         } catch (error) {
             throw new Error("Error updating issue" + error)
         }
@@ -47,22 +55,24 @@ const IssuesPage = () => {
 
     const issueComponents = issues.map((issue: ExistingIssues) => {
         return (
-            <div>
+            <div className="issue-box">
                 <span>Title: {issue.title} </span>
                 <span>Description: {issue.issue_description}</span>
                 <span>Status: {issue.status}</span>
-                <button onClick={() => closeIssue(issue.id)}>Mark as Closed</button>
+                <button onClick={() => closeIssue(issue.id)}>Mark as {issue.status === "open" ? "Closed" : "Open"} </button>
             </div>
         )
     })
 
 
     return (
-        <div>
-            <h1>Issues Page for {location.state.projectName}</h1>
+        <div className="issues-page-container">
+            <div className="issues-container">
+                <h2> {location.state.projectName} Current Issues </h2>
+                {issueComponents}
+                <button onClick={() => navigate('/dashboard')}>Go back to projects page</button>
+            </div>
             <CreateIssuesForm projectId={id!} setIssues={setIssues}/>
-            {issueComponents}
-            <button onClick={() => navigate('/dashboard')}>Go back to projects page</button>
         </div>
     )
 }

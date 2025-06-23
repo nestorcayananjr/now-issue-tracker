@@ -37,7 +37,8 @@ const CreateIssuesForm:React.FC<CreateIssuesFormProps> = ({projectId, setIssues}
     }
 
     return (
-        <div>
+        <div className="issue-form-container">
+            <h2>Add a New Issue</h2>
             <label htmlFor="title">Title</label>
             <input onChange={(e) => handleChange(e)} name="title" id="title" type={"text"} />
 
