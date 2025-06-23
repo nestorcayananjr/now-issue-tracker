@@ -113,3 +113,5 @@ In the middleware function `requireAuth` I check for the userId that was stored 
 - Testing
 - Standardized Types
 - Reusable components and hooks
+- Security Enhancements (ex: improved sterilization)
+- Axios controller for frontend
