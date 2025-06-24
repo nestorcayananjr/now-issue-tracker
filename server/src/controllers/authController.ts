@@ -7,7 +7,6 @@ import { CustomSession } from '../types/customSession'
 
 interface authControllerInterface {
   validateUser: (req: Request, res: Response, next: NextFunction) => Promise<void>,
-  requireAuth: (req: Request, res: Response, next: NextFunction) => Promise<void>,
 }
 
 const authController: authControllerInterface = {
@@ -21,7 +20,6 @@ const authController: authControllerInterface = {
 
             if (validPassword){
                 const session = (req.session as CustomSession);
-
                 // create the session and store the user id on it
                 session.userId = storedPassword.rows[0].id
                 return next();
@@ -30,15 +28,6 @@ const authController: authControllerInterface = {
             }
         } catch(err){
             return next(createHttpError(400, 'Error in authController.validateUser'))
-        }
-    },
-
-    requireAuth: async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
-        const session = (req.session as CustomSession);
-        if (!session.userId){
-            return next(createHttpError(401, 'Unauthorized'))
-        } else {
-            return next();
         }
     }
 }

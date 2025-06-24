@@ -10,12 +10,10 @@ interface projectsControllerInterface {
 
 const projectsController: projectsControllerInterface = {
     getUserProjects: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        console.log(req.session)
         const userId = (req.session as CustomSession).userId;
-        console.log(userId)
         
         try {
-            const usersProjects = await db.query(`SELECT * FROM projects WHERE created_by= ${userId}`);
+            const usersProjects = await db.query(`SELECT * FROM projects WHERE created_by=${userId}`);
             res.locals.usersProjects = usersProjects.rows;
             return next()
         } catch (err) {

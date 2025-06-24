@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { db } from '../models/db';
 import createHttpError from 'http-errors'
+import { CustomSession } from '../types/customSession';
 
 
 interface issuesControllerInterface {
@@ -11,10 +12,29 @@ interface issuesControllerInterface {
 
 const issuesController: issuesControllerInterface = {
     getIssuesByProject: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const project_id = req.params.projectId
-        const command = `SELECT * FROM issues WHERE project_id = $1`;
+        // need to first check if the user owns the project
+        const userId = (req.session as CustomSession).userId;
+        const projectId = req.params.projectId
+        const getProjectOwnerCommand = `SELECT created_by, project_name FROM projects WHERE id = $1`
+
+        // check if the user owns the project before fetching the issues
         try {
-            const allIssuesByProject = await db.query(command, [project_id])
+            const project= await db.query(getProjectOwnerCommand, [projectId]);
+            const { project_name, created_by} = project.rows[0]
+            if (created_by !== userId){
+                return next(createHttpError(403, 'You do not own this project'))
+            } else {
+                res.locals.projectName = project_name;
+            }
+        } catch (error) {
+            return next(createHttpError(400, 'Error in issuesController.getIssuesByProject'))
+        }
+
+        const getIssuesCommand = `SELECT * FROM issues WHERE project_id = $1`;
+
+        // get all of the issues for the project
+        try {
+            const allIssuesByProject = await db.query(getIssuesCommand, [projectId])
             res.locals.issues = allIssuesByProject.rows;
             return next()
         } catch(err){

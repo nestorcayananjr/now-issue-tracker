@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import { useParams, useLocation, useNavigate } from "react-router"
 import CreateIssuesForm from "../features/issues/components/CreateIssueForm";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ExistingIssues } from "../features/issues/types/IssuesType";
+import IssueComponent from "../features/issues/components/IssueComponent";
 
 const IssuesPage = () => {
     const { id } = useParams<{id: string}>();
@@ -10,6 +11,7 @@ const IssuesPage = () => {
     const navigate = useNavigate();
 
     const [issues, setIssues] = useState<ExistingIssues[]>([]);
+    const [projectName, setProjectName] = useState('')
 
     useEffect(() => {
         const controller = new AbortController();
@@ -19,9 +21,16 @@ const IssuesPage = () => {
                 const issues = await axios.get(`http://localhost:5001/api/issues/${id}`, {
                     withCredentials: true
                 })
-                setIssues(issues.data)
+                setIssues(issues.data.issues)
+                setProjectName(issues.data.projectName)
             } catch (error) {
-                throw new Error("Error grabbing intial issues" + error)
+                if (error instanceof AxiosError && error.status === 403){
+                    alert("You do not own this project, redirecting back to your projects.")
+                    navigate('/dashboard')
+                } else {
+                    throw new Error ("Error fetching initial issues: " + error)
+                }
+                
             }
         }
 
@@ -32,35 +41,20 @@ const IssuesPage = () => {
         };
         }, [id])
 
-    const closeIssue = (id: number) => {
-        try {
-            const updatedIssue: ExistingIssues = (issues.filter((issue) => issue.id === id)[0])
-
-            axios.patch(`http://localhost:5001/api/issues/${id}`, {
-                ...updatedIssue,
-                status: updatedIssue.status === "open" ? "closed" : "open"
-            }, { withCredentials: true})
-
-            setIssues((prevState) => {
-                return prevState.map((issue) =>
-                issue.id === id
-                  ? { ...issue, status: issue.status === 'open' ? 'closed' : 'open' }
-                  : issue
-            )})
-
-        } catch (error) {
-            throw new Error("Error updating issue" + error)
-        }
-    }
+  
 
     const issueComponents = issues.map((issue: ExistingIssues) => {
+        const { title, issue_description, status, id, project_id} = issue;
         return (
-            <div className="issue-box">
-                <span>Title: {issue.title} </span>
-                <span>Description: {issue.issue_description}</span>
-                <span>Status: {issue.status}</span>
-                <button onClick={() => closeIssue(issue.id)}>Mark as {issue.status === "open" ? "Closed" : "Open"} </button>
-            </div>
+            <IssueComponent 
+                key={id}
+                title={title} 
+                issue_description={issue_description} 
+                status={status} id={id} 
+                project_id={project_id}
+                setIssues={setIssues}
+                currentIssues={issues}
+                />
         )
     })
 
@@ -68,7 +62,7 @@ const IssuesPage = () => {
     return (
         <div className="issues-page-container">
             <div className="issues-container">
-                <h2> {location.state.projectName} Current Issues </h2>
+                {!projectName ? <h1>Loading...</h1> : <h2> Current Issues for {projectName} </h2>}
                 {issueComponents}
                 <button onClick={() => navigate('/dashboard')}>Go back to projects page</button>
             </div>

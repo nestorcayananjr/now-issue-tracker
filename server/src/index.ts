@@ -17,6 +17,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// config for sessions
 app.use(session({
   secret: process.env.SESSION_SECRET as string,
   resave: false,
@@ -29,6 +31,7 @@ app.use(session({
   }
 }))
 
+// routers
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/projects', projectsRouter);

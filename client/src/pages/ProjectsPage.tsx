@@ -1,11 +1,13 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import {useState, useEffect} from "react"
+import { useNavigate } from "react-router"
 import CreateProjectForm from "../features/projects/components/CreateProjectForm"
 import ProjectComponent from "../features/projects/components/ProjectComponent"
 import { Project } from "../features/projects/types/Project"
 
 const ProjectsPage = () => {
     const [projects, setProjects] = useState<Project[]>([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const controller = new AbortController();
@@ -16,8 +18,13 @@ const ProjectsPage = () => {
                     withCredentials: true
                 })
                 setProjects(projects.data)
-            } catch (error) {
-                throw new Error("Error grabbing intial projects" + error)
+            } catch (error: unknown) {
+                if (error instanceof AxiosError){
+                    if (error.status === 401){
+                        alert("You are currently not logged in, being redirected to log in page...")
+                        navigate('/')
+                    }
+                }
             }
         }
 
