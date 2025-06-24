@@ -1,5 +1,4 @@
 import issuesController from "../controllers/issuesController";
-import authController from "../controllers/authController";
 import { requireAuth } from "../utils/auth";
 import express, { Router, Request, Response } from 'express'
 

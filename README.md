@@ -91,7 +91,7 @@ Issues are always associated with a project so similar to the projects schema, w
 
 ### Authentication
 
-For authentication I am using express-session. 
+For authentication I am using `express-session`. 
 
 When a user successfully logs in, the `userId` is stored on the session object which lives server-side. 
 
@@ -99,7 +99,7 @@ In return, express-session sends the browser a cookie `connect.sid`. This cookie
 
 As long as the client makes axios requests with the `withCredentials` option set to `true` the browser will send the cookie with each request. This allows express-session to find the session and attach it to `req.session`. 
 
-In `authController` is a middleware function `requireAuth`. For routes that require authentication, this middleware function is ran first (ex: creating a new project and issue). 
+In `utils/auth.ts` file is a middleware function `requireAuth`. For routes that require authentication, this middleware function is ran first (ex: creating a new project and issue). 
 
 In the middleware function `requireAuth` I check for the userId that was stored on the session object...
 - if it is there it will move on to the next middleware function. 

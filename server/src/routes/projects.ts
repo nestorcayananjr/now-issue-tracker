@@ -1,5 +1,4 @@
 import projectsController from "../controllers/projectsController";
-import authController from "../controllers/authController";
 import { requireAuth } from "../utils/auth";
 import express, { Router, Request, Response } from 'express'
 
